@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cellBorder">#616161</color>
+    <color name="regionBorder">#616161</color>
+    <color name="cellHighlight">#9CCC65</color>
+    <color name="cellSlightHighlight">#C5E1A5</color>
+    <color name="cellPreset">#EEEEEE</color>
+    <color name="cellNotPreset">#FAFAFA</color>
+</resources>

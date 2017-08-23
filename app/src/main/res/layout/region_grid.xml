@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.korbi.simplesudoku.sudokuviews.SudokuGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/region_field"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/cellBorder"
+    android:numColumns="3"
+    android:choiceMode="singleChoice">
+
+
+</com.korbi.simplesudoku.sudokuviews.SudokuGridView>
