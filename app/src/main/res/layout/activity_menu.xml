@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:weightSum="1"
+    android:background="@color/background">
+
+    <ImageView
+        android:id="@+id/imageViewPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/simple_sudoku_logo"
+        android:layout_weight="0.82"
+        android:paddingTop="60dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="30dp">
+
+        <Button
+            android:id="@+id/button_menu_load"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"
+            android:text="@string/load_game"
+            android:onClick="loadGame"
+            android:background="@color/colorPrimary"/>
+
+        <Button
+            android:id="@+id/button_menu_new_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"
+            android:text="@string/new_game"
+            android:onClick="createNewGame"
+            android:background="@color/colorPrimary"/>
+
+        <Button
+            android:id="@+id/button_menu_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"
+            android:text="@string/settings"
+            android:onClick="launchSettings"
+            android:background="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+</LinearLayout>

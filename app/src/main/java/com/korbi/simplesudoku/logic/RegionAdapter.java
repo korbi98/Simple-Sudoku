@@ -1,17 +1,10 @@
 package com.korbi.simplesudoku.logic;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-
-import com.korbi.simplesudoku.R;
 import com.korbi.simplesudoku.sudokuviews.SudokuCellView;
-import com.korbi.simplesudoku.sudokuviews.SudokuGridView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

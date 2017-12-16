@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#7CB342</color>
+    <color name="colorPrimaryDark">#689F38</color>
+    <color name="colorAccent">#E65100</color>
+
     <color name="cellBorder">#616161</color>
     <color name="regionBorder">#616161</color>
-    <color name="cellHighlight">#9CCC65</color>
-    <color name="cellSlightHighlight">#C5E1A5</color>
+    <color name="sudokuTextColor">#424242</color>
+
+    <color name="cellHighlight">#C5E1A5</color>
+    <color name="cellSlightHighlight">#F1F8E9</color>
     <color name="cellPreset">#EEEEEE</color>
     <color name="cellNotPreset">#FAFAFA</color>
+    <color name="cellFaulty">#FFAB91</color>
+    <color name="background">#EEEEEE</color>
 </resources>

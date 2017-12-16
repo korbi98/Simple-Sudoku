@@ -40,6 +40,7 @@ public class SudokuCellView extends BasicSudokuCell {
             if (isPreSet()) setTypeface(null, Typeface.BOLD);
             else setTypeface(null, Typeface.NORMAL);
             setText(String.valueOf(getValue()));
+            setTextColor(getResources().getColor(R.color.sudokuTextColor));
         } else setText("");
 
         drawBorders(canvas);

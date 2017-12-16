@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:isScrollContainer="false">
+    android:isScrollContainer="false"
+    android:background="@color/background">
 
 
     <GridView
@@ -36,7 +37,7 @@
          <Button
              android:id="@+id/button1"
              android:layout_width="wrap_content"
-             tools:context="com.korbi.simplesudoku.GameActivity"
+             tools:context="com.korbi.simplesudoku.Activities.GameActivity"
              android:layout_height="wrap_content"
              android:layout_weight="1"
              android:text="1"

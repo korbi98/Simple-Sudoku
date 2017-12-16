@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/game_settings">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/difficulty_settings"
+            android:entryValues="@array/difficulty_settings"
+            android:key="@string/game_settings_difficulty_key"
+            android:negativeButtonText="cancel"
+            android:positiveButtonText="@null"
+            android:title="@string/set_difficulty" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/game_settings_show_errors_key"
+            android:title="@string/game_settings_show_error"
+            android:summary="@string/game_settings_show_error_summary"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/game_settings_show_current_position_key"
+            android:title="@string/game_settings_show_current_position"
+            android:summary="@string/game_settings_show_current_position_summary"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about_app">
+
+        <Preference
+            android:selectable="false"
+            android:summary="@string/summary_about" />
+
+        <Preference
+            android:selectable="false"
+            android:key="@string/about_version_key"
+            android:summary="1"
+            android:title="@string/about_version" />
+
+        <Preference
+            android:key="@string/key_send_feedback"
+            android:summary="@string/about_send_feedback_summary"
+            android:title="@string/about_send_feedback_title"/>
+
+
+        <Preference
+            android:key="@string/about_rate_app_key"
+            android:summary="@string/about_rate_app_summary"
+            android:title="@string/about_rate_app_title"/>
+
+        <Preference
+            android:key="@string/about_other_apps_key"
+            android:title="@string/about_other_apps_title">
+        </Preference>
+
+        <Preference
+            android:summary="@string/about_sourcecode_summary"
+            android:title="@string/about_sourcecode_title">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/korbi98"/>
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
+
+
+
+
+

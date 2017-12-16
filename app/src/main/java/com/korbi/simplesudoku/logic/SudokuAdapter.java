@@ -1,6 +1,7 @@
 package com.korbi.simplesudoku.logic;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class SudokuAdapter  extends BaseAdapter{
     private final SudokuGridView regions[];
     private RegionAdapter adapters[];
     private List<List<SudokuCellView>> regionData;
+    private SudokuLogic sHelber;
 
     public SudokuAdapter(Context context, SudokuGrid grid)
     {
@@ -33,6 +35,7 @@ public class SudokuAdapter  extends BaseAdapter{
         regions = new SudokuGridView[9];
         regionData = getRegionData(grid);
         adapters = new RegionAdapter[9];
+        sHelber = new SudokuLogic(grid);
 
         for (int i = 0; i < 9 ; i++){
             adapters[i] = new RegionAdapter(context, regionData.get(i));
@@ -74,7 +77,8 @@ public class SudokuAdapter  extends BaseAdapter{
             public void onItemClick(AdapterView<?> parent, View view, int positionInRegion, long id) {
                 //Toast.makeText(context, String.valueOf(getPosition(position, positionInRegion)), Toast.LENGTH_LONG).show();
                 grid.highlightCells(getPosition(position, positionInRegion));
-
+                //sHelber.solveSudoku(grid);
+                Log.d("test", grid.getGridString());
             }
         });
         gridView.setAdapter(adapters[position]);
