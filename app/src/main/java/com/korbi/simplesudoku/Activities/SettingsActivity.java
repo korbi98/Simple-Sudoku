@@ -9,6 +9,8 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
+import android.widget.Toolbar;
 
 import com.korbi.simplesudoku.R;
 
@@ -38,8 +40,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         catch (PackageManager.NameNotFoundException e){e.printStackTrace();}
 
+        getSupportActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new MainPreferenceFragement()).commit();
@@ -48,6 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public static class MainPreferenceFragement extends PreferenceFragment{
         @Override
         public void onCreate(final Bundle savedInstanceState) {
+
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
 
@@ -104,6 +107,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private static void bindPreferenceSummaryToValue(Preference preference){

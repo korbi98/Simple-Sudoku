@@ -60,7 +60,7 @@
             android:title="@string/about_sourcecode_title">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://github.com/korbi98"/>
+                android:data="https://github.com/korbi98/Simple-Sudoku"/>
         </Preference>
 
     </PreferenceCategory>
