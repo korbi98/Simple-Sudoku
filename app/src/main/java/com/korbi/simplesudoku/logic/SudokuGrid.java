@@ -1,12 +1,10 @@
 package com.korbi.simplesudoku.logic;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.korbi.simplesudoku.Activities.GameActivity;
 import com.korbi.simplesudoku.R;
+import com.korbi.simplesudoku.activities.GameActivity;
 import com.korbi.simplesudoku.sudokuviews.SudokuCellView;
 
 import java.util.ArrayList;
@@ -30,13 +28,11 @@ public class SudokuGrid {
     public SudokuGrid(Context context){
         this.context = context;
 
-        int i = 1;
         for( int y = 0; y < 9; y++){
             for( int x = 0; x < 9; x++){
                 sudoku[x][y] = new SudokuCellView(context);
                 sudoku[x][y].setIsPreSet(true);
-                sudoku[x][y].setValue(i);
-                i++;
+                sudoku[x][y].setValue(0);
                 sudoku[x][y].setBackgroundResource(R.color.cellPreset);
             }
         }
@@ -53,11 +49,16 @@ public class SudokuGrid {
         return sudoku[x][y];
     }
 
-    public void setGrid( int[][] grid ){
-        for( int x = 0 ; x < 9 ; x++ ){
-            for( int y = 0 ; y < 9 ; y++){
-                sudoku[x][y].setValue(grid[x][y]);
-            }
+    public void clearGrid(){
+        for (int i = 0; i < 81; i++){
+            if (!getItem(i).isPreSet())
+                getItem(i).setValue(0);
+        }
+    }
+
+    public void clearCompleteGrid(){
+        for (int i = 0; i < 81; i++){
+            getItem(i).setValue(0);
         }
     }
 
@@ -149,17 +150,17 @@ public class SudokuGrid {
 
     public SudokuCellView getCurrentPosition() { return getItem(currentPosition); }
 
-    public int getCurrentColumn(){
+    private int getCurrentColumn(){
         return sHelper.getColumn(currentPosition);
     }
-    public int getCurrentRow(){
+    private int getCurrentRow(){
         return sHelper.getRow(currentPosition);
     }
-    public int getCurrentSquare(){
+    private int getCurrentSquare(){
         return sHelper.getSquare(currentPosition);
     }
 
-    public void updateFaultyLists(){
+    private void updateFaultyLists(){
         boolean faultyColumn = !sHelper.checkColumn(getCurrentColumn());
         boolean faultyColumnAlreadyInList = faultyColumns.contains(getCurrentColumn());
         boolean faultyRow = !sHelper.checkRow(getCurrentRow());

@@ -1,5 +1,6 @@
-package com.korbi.simplesudoku.Activities;
+package com.korbi.simplesudoku.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,7 +11,6 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.widget.Toolbar;
 
 import com.korbi.simplesudoku.R;
 
@@ -29,10 +29,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     static String versionNumber;
     static String getPackageName;
+    static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
 
         getPackageName = getPackageName();
         try{
@@ -63,8 +65,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             sendFeedback.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    String mailLink = "mailto:korbi@korbinian-moser.de?" +
-                                        "subject=simple Sudoku feedback";
+                    String mailLink = "mailto:info@korbinian-moser.de?" +
+                                        "subject=Simple Sudoku feedback";
 
                     Intent sendMail = new Intent(Intent.ACTION_VIEW);
                     Uri data = Uri.parse(mailLink);
@@ -137,8 +139,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (preference instanceof ListPreference){
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
-
-                preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+                if (stringValue.equals("10")){
+                    preference.setSummary("10\n" + context.getString(R.string.long_loadtime_warning));
+                }
+                else{
+                    preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+                }
             }
 
             else {

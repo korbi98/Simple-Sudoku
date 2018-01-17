@@ -2,16 +2,12 @@ package com.korbi.simplesudoku.sudokuviews;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 
 import com.korbi.simplesudoku.R;
-
-import java.text.ParseException;
 
 /**
  * Created by korbi on 7/21/17.
@@ -44,6 +40,16 @@ public class SudokuCellView extends BasicSudokuCell {
         } else setText("");
 
         drawBorders(canvas);
+    }
+
+    @Override
+    public void setIsPreSet(boolean isPreset){
+        super.setIsPreSet(isPreset);
+        if (isPreset){
+            setBackgroundResource(R.color.cellPreset);
+        } else {
+            setBackgroundResource(R.color.cellNotPreset);
+        }
     }
 
     private void drawBorders(Canvas canvas) {

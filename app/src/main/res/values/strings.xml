@@ -9,22 +9,13 @@
 
     <!-- Strings related to Settings -->
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
     <string name="set_difficulty">Set difficulty</string>
     <string name="game_settings">Game settings</string>
     <string name="about_app">About</string>
     <string name="summary_about">A simple and straightforward Sudoku App</string>
     <string name="about_version">Version</string>
     <string name="about_send_feedback_title">Send feedback</string>
-    <string name="about_send_feedback_summary">Have any Questions or Problems? Let me know.</string>
+    <string name="about_send_feedback_summary">Have any questions or problems? Let me know.</string>
     <string name="key_send_feedback">send_feedback</string>
     <string name="about_send_feedback_link"><![CDATA[mailto:korbi@korbinian-moser.de subject="simple Sudoku feedback"]]></string>
     <string name="about_version_key">version_key</string>
@@ -46,6 +37,7 @@
     <string name="about_other_apps_title">Check out my other apps</string>
     <string name="about_sourcecode_summary">View the sourcecode on my GitHub repo</string>
     <string name="about_sourcecode_title">Sourcecode</string>
+    <string name="long_loadtime_warning">On high difficulties the generation of new sudokus could take a couple of seconds!</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>

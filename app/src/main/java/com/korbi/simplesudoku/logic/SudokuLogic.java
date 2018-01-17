@@ -1,35 +1,32 @@
 package com.korbi.simplesudoku.logic;
 
-import android.support.v4.app.INotificationSideChannel;
-import android.util.IntProperty;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.korbi.simplesudoku.R;
+import com.korbi.simplesudoku.sudokuviews.SudokuCellView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 
 /**
  * Created by korbi on 7/26/17.
+ * This class handles the generation and validation of the sudokus
  */
 
 public class SudokuLogic
 {
-    SudokuGrid grid;
+    private SudokuGrid grid;
     private Random random;
-    public static final int DIFFICULTY_CONSTANT = 25;
+    private static final int DIFFICULTY_CONSTANT = 25;
 
     public SudokuLogic(SudokuGrid grid){
         this.grid = grid;
         random = new Random();
     }
 
-    public SudokuGrid generateSudoku(SudokuGrid grid) //TODO make getRowPositions etc fixed Lists, so that they dont have to be generated every time
+    //Takes empty Grid and generates a solved one
+    public SudokuGrid generateSudoku(SudokuGrid grid) //TODO make getRowPositions etc fixed Lists, so that they don't have to be generated every time
     {
         ArrayList<ArrayList<Integer>> available = createCandidates();
 
@@ -50,42 +47,60 @@ public class SudokuLogic
             for (int position : getRowPositions(getRow(i)))
             {
                 if (available.get(position).contains(new_number)){
-                    available.get(position).remove((Object)new_number);}
+                    available.get(position).remove((Integer) new_number);}
             }
 
             for (int position : getColumnPositions(getColumn(i)))
             {
                 if (available.get(position).contains(new_number)){
-                    available.get(position).remove((Object)new_number);}
+                    available.get(position).remove((Integer) new_number);}
             }
 
             for (int position : getSquarePositions(getSquare(i)))
             {
                 if (available.get(position).contains(new_number)){
-                    available.get(position).remove((Object)new_number);}
+                    available.get(position).remove((Integer) new_number);}
             }
         }
         return grid;
     }
 
-    public SudokuGrid clearCells(SudokuGrid grid, int difficulty)
+    public void clearCells(SudokuGrid grid, int difficulty)
     {
         List<Integer> positions = new ArrayList<>();
         for(int i = 0; i < 81; i++) positions.add(i);
         int position;
         int cellsToRemove = DIFFICULTY_CONSTANT + 3 * difficulty;
+        int cellsRemoved = 0;
 
-
-        for(int i = cellsToRemove;i > 0; i--)
+        while(cellsRemoved < cellsToRemove)
         {
+            /*on high difficulties, when more than 50 cells get removed, not every sudoku has
+            * a unique solution with that many empty cells, therefore we might have to generate
+            * a new one and try again. On high difficulties removing the cells can take quite some
+            * time because of trial and error*/
+            if (positions.isEmpty()){
+                Log.d("Holy shit", "my circuits are melting");
+                grid.clearCompleteGrid();
+                grid = generateSudoku(grid);
+                for(int i = 0; i < 81; i++) positions.add(i);
+            }
+
             position = random.nextInt(positions.size());
+            int deletedValue = grid.getItem(positions.get(position)).getValue();
             grid.getItem(positions.get(position)).setValue(0);
             grid.getItem(positions.get(position)).setIsPreSet(false);
-            grid.getItem(positions.get(position)).setBackgroundResource(R.color.cellNotPreset);
+
+            if(isSolutionUnique()){
+                cellsRemoved++;
+            }
+            else {
+                grid.getItem(positions.get(position)).setValue(deletedValue);
+                grid.getItem(positions.get(position)).setIsPreSet(true);
+            }
 
             positions.remove(position);
         }
-        return grid;
     }
 
     public boolean checkIfFilled(SudokuGrid data)
@@ -159,9 +174,9 @@ public class SudokuLogic
         return true;
     }
 
-    public ArrayList<ArrayList<Integer>> createCandidates()
+    private ArrayList<ArrayList<Integer>> createCandidates()
     {
-        ArrayList<ArrayList<Integer>> candidates = new ArrayList<ArrayList<Integer>>();
+        ArrayList<ArrayList<Integer>> candidates = new ArrayList<>();
 
         for (int i = 0; i<81; i++)
         {
@@ -236,7 +251,7 @@ public class SudokuLogic
         return positions;
     }
 
-    private List<Integer> getAvailableNumbers(int position){
+    public List<Integer> getAvailableNumbers(int position){
         List<Integer> availableNumbers = new ArrayList<>();
         for (int i = 1; i < 10; i++){
             availableNumbers.add(i);
@@ -263,22 +278,88 @@ public class SudokuLogic
         return availableNumbers;
     }
 
-    private List<Integer> getEmptyCells(SudokuGrid grid){
-        List<Integer> emptyCells = new ArrayList<>();
-        for (int i = 0; i < 81; i++){
-            if (grid.getItem(i).getValue() == 0) emptyCells.add(i);
-        }
-        return emptyCells;
-    }
+    /*
+    * solvesudoku is a backtracking algorithm, that solves the sudoku
+    * solvesudokubackward is the same algorithm with the difference that it tries the numbers from 9-1
+    * instead of 1-9 by running both algorithms and comparing the result, it can be determined if
+    * the sudoku has a unique solution (both solved sudokus are the same in that case)
+    * */
 
-    public boolean solveSudoku(SudokuGrid grid){
-        int position = getEmptyCells(grid).get(0);
+    private boolean solveSudoku(int position){
+
+        if (position > 80) return true; // reached end of the grid Sudoku is solved
+
+        SudokuCellView cell = grid.getItem(position);
+
+        if (cell.getValue() != 0){
+            return solveSudoku(position + 1); // Go to next cell because current cell is already solved
+        }
 
         for (int i = 1; i < 10; i++){
 
+            boolean valid = getAvailableNumbers(position).contains(i); // checks if i is a possible solution to the current cell
+
+            if (!valid){
+                continue;
+            }
+
+            cell.setValue(i); // assign the value of i to the cell, because it's a possible solution
+
+            boolean solveNext = solveSudoku(position + 1);
+
+            if (solveNext){
+                return true;
+            }
+            else{
+                cell.setValue(0);
+            }
         }
 
         return false;
+    }
+
+    private boolean solveSudokuBackward(int position){
+
+        if (position > 80) return true; // reached end of the grid Sudoku is solved
+
+        SudokuCellView cell = grid.getItem(position);
+
+        if (cell.getValue() != 0){
+            return solveSudokuBackward(position + 1); // Go to next cell because current cell is already solved
+        }
+
+        for (int i = 9; i > 0; i--){
+
+            boolean valid = getAvailableNumbers(position).contains(i); // checks if i is a possible solution to the current cell
+
+            if (!valid){
+                continue;
+            }
+
+            cell.setValue(i); // assign the value of i to the cell, because it's a possible solution
+
+            boolean solveNext = solveSudokuBackward(position + 1);
+
+            if (solveNext){
+                return true;
+            }
+            else{
+                cell.setValue(0);
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isSolutionUnique(){
+        solveSudoku(0);
+        String firstSolution = grid.getGridString();
+        grid.clearGrid();//resets to grid to initial grid
+        solveSudokuBackward(0);
+        String secondSolution = grid.getGridString();
+        grid.clearGrid();
+
+        return firstSolution.equals(secondSolution);
     }
 
 //    public int solveSudoku(SudokuGrid grid){ // checks if there is only one solution to the sodoku

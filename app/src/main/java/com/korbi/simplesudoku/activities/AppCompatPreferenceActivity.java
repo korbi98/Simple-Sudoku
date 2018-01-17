@@ -1,4 +1,4 @@
-package com.korbi.simplesudoku.Activities;
+package com.korbi.simplesudoku.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

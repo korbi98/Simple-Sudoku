@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         app:srcCompat="@mipmap/simple_sudoku_logo"
         android:layout_weight="0.82"
-        android:paddingTop="60dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
         android:layout_marginBottom="20dp"
         />
 

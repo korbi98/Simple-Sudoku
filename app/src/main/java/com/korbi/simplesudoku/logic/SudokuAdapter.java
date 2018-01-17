@@ -1,7 +1,5 @@
 package com.korbi.simplesudoku.logic;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +19,14 @@ import java.util.List;
 
 public class SudokuAdapter  extends BaseAdapter{
 
-    private Context context;
     private SudokuGrid grid;
     private final SudokuGridView regions[];
     private RegionAdapter adapters[];
     private List<List<SudokuCellView>> regionData;
     private SudokuLogic sHelber;
 
-    public SudokuAdapter(Context context, SudokuGrid grid)
+    public SudokuAdapter(SudokuGrid grid)
     {
-        this.context = context;
         this.grid = grid;
         regions = new SudokuGridView[9];
         regionData = getRegionData(grid);
@@ -38,7 +34,7 @@ public class SudokuAdapter  extends BaseAdapter{
         sHelber = new SudokuLogic(grid);
 
         for (int i = 0; i < 9 ; i++){
-            adapters[i] = new RegionAdapter(context, regionData.get(i));
+            adapters[i] = new RegionAdapter(regionData.get(i));
         }
 
     }
@@ -60,7 +56,7 @@ public class SudokuAdapter  extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parent)
+    public View getView(final int position, final View convertView, ViewGroup parent) //TODO find/fix reason for high cpu usage
     {
         View view = convertView;
 
@@ -69,7 +65,7 @@ public class SudokuAdapter  extends BaseAdapter{
         }
 
         regions[position] = (SudokuGridView) view.findViewById(R.id.region_field);
-        SudokuGridView gridView = regions[position];
+        final SudokuGridView gridView = regions[position];
 
         gridView.setNumColumns(3);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -77,8 +73,6 @@ public class SudokuAdapter  extends BaseAdapter{
             public void onItemClick(AdapterView<?> parent, View view, int positionInRegion, long id) {
                 //Toast.makeText(context, String.valueOf(getPosition(position, positionInRegion)), Toast.LENGTH_LONG).show();
                 grid.highlightCells(getPosition(position, positionInRegion));
-                //sHelber.solveSudoku(grid);
-                Log.d("test", grid.getGridString());
             }
         });
         gridView.setAdapter(adapters[position]);
