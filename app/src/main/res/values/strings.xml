@@ -37,7 +37,10 @@
     <string name="about_other_apps_title">Check out my other apps</string>
     <string name="about_sourcecode_summary">View the sourcecode on my GitHub repo</string>
     <string name="about_sourcecode_title">Sourcecode</string>
-    <string name="long_loadtime_warning">On high difficulties the generation of new sudokus could take a couple of seconds!</string>
+    <string name="inventory_warning">No prestored Sudokus of chosen difficulty!</string>
+    <string name="inventory_warning_message">Generating a new Sudoku on a higher difficulty could take a couple of seconds and the app might freeze until a new one is generated</string>
+    <string name="proceed">proceed</string>
+    <string name="cancel">cancel</string>
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>

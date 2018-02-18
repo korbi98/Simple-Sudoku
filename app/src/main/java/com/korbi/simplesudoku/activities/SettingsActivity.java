@@ -139,12 +139,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (preference instanceof ListPreference){
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
-                if (stringValue.equals("10")){
-                    preference.setSummary("10\n" + context.getString(R.string.long_loadtime_warning));
-                }
-                else{
-                    preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
-                }
+                preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
             }
 
             else {

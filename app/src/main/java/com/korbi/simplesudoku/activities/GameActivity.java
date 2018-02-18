@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 
 import com.korbi.simplesudoku.R;
+import com.korbi.simplesudoku.db.SudokuDBhelper;
+import com.korbi.simplesudoku.logic.CreateSudokusRunnable;
 import com.korbi.simplesudoku.logic.SudokuAdapter;
 import com.korbi.simplesudoku.logic.SudokuGrid;
 import com.korbi.simplesudoku.logic.SudokuLogic;
@@ -20,13 +23,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     public  SudokuGrid sGrid;
     private SharedPreferences preferences;
+    private SudokuDBhelper db;
     SudokuLogic sHelper;
+    SudokuAdapter adapter;
     public static final int LOAD_GAME = 1;
     public static final int NEW_GAME = 0;
     public static final String LOAD_OR_NEW = "load";
     public static final String SAVE_FILE = "savefile";
     public static boolean showErrorPreference;
     public static boolean highlightCellPreference;
+    CreateSudokusRunnable sudokusRunnable;
+    Thread sudokuCreator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +42,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         Button[] numberButtons;
         ImageButton deleteNumber;
-        SudokuAdapter adapter;
         GridView sudokuField;
 
-
+        db = new SudokuDBhelper(getApplicationContext());
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         showErrorPreference = preferences.getBoolean(getString(R.string.game_settings_show_errors_key), true);
         highlightCellPreference = preferences.getBoolean(getString(R.string.game_settings_show_current_position_key), true);
@@ -75,6 +81,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter = new SudokuAdapter(sGrid);
         sudokuField.setAdapter(adapter);
+
+        if (!MenuActivity.sudokuCreator.isAlive()){
+            sudokusRunnable = new CreateSudokusRunnable(getApplicationContext());
+            sudokuCreator = new Thread(sudokusRunnable);
+            Log.d("startThread", "thread started");
+            sudokuCreator.start();
+        }
     }
 
     @Override
@@ -114,9 +127,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void newGame(){
         String difficultyString = preferences.getString(getString(R.string.game_settings_difficulty_key), "1");
         Integer difficulty = Integer.parseInt(difficultyString);
-        sHelper.generateSudoku(sGrid);
-        sHelper.clearCells(sGrid, difficulty);
-        sGrid.clearFaultyLists();
+        if(db.getDifficultyCount(difficulty) == 0){
+            sHelper.generateSudoku(sGrid);
+            sHelper.clearCells(sGrid, difficulty);
+            sGrid.clearFaultyLists();
+        } else {
+            sGrid = db.getSudokuByDifficulty(difficulty);
+        }
     }
 
     private void loadGame(){
