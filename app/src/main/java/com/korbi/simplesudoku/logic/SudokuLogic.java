@@ -1,7 +1,5 @@
 package com.korbi.simplesudoku.logic;
 
-import android.util.Log;
-
 import com.korbi.simplesudoku.sudokuviews.SudokuCellView;
 
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ public class SudokuLogic
 {
     private SudokuGrid grid;
     private Random random;
-    private static final int DIFFICULTY_CONSTANT = 25;
+    private static final int DIFFICULTY_CONSTANT = 28;
 
     public SudokuLogic(SudokuGrid grid){
         this.grid = grid;
@@ -35,7 +33,6 @@ public class SudokuLogic
             if (available.get(i).isEmpty()) {
                 available = createCandidates();
                 i = 0;
-                Log.d("fail", "creation failed");
             }
 
             int index = random.nextInt(available.get(i).size());
@@ -80,7 +77,6 @@ public class SudokuLogic
             * a new one and try again. On high difficulties removing the cells can take quite some
             * time because of trial and error*/
             if (positions.isEmpty()){
-                Log.d("Holy shit", "my circuits are melting");
                 grid.clearCompleteGrid();
                 grid = generateSudoku(grid);
                 for(int i = 0; i < 81; i++) positions.add(i);
@@ -118,58 +114,58 @@ public class SudokuLogic
         return true;
     }
 
-    public boolean checkColumn(int column)
+    public boolean checkColumn(int column, SudokuGrid sGrid)
     {
         List<Integer> numberToLockFor = new ArrayList<>();
         for(int i = 0; i < 9; i++)
         {
-            if(grid.getItem(column, i).getValue() != 0 ) {
-                if (numberToLockFor.contains(grid.getItem(column, i).getValue())) {
+            if(sGrid.getItem(column, i).getValue() != 0 ) {
+                if (numberToLockFor.contains(sGrid.getItem(column, i).getValue())) {
                     return false;
                 }
             }
-            numberToLockFor.add(grid.getItem(column, i).getValue());
+            numberToLockFor.add(sGrid.getItem(column, i).getValue());
         }
 
         return true;
     }
 
-    public boolean checkRow(int row)
+    public boolean checkRow(int row, SudokuGrid sGrid)
     {
         List<Integer> numberToLockFor = new ArrayList<>();
         for(int j = 0; j < 9; j++)
         {
-            if(grid.getItem(j, row).getValue() != 0 ) {
-                if (numberToLockFor.contains(grid.getItem(j, row).getValue())) {
+            if(sGrid.getItem(j, row).getValue() != 0 ) {
+                if (numberToLockFor.contains(sGrid.getItem(j, row).getValue())) {
                     return false;
                 }
             }
-            numberToLockFor.add(grid.getItem(j, row).getValue());
+            numberToLockFor.add(sGrid.getItem(j, row).getValue());
         }
         return true;
     }
 
-    public boolean checkSquare(int square)
+    public boolean checkSquare(int square, SudokuGrid sGrid)
     {
         List<Integer> numberToLockFor = new ArrayList<>();
 
         for(int i : getSquarePositions(square)){
 
-            if(grid.getItem(i).getValue() != 0 ){
-                if (numberToLockFor.contains(grid.getItem(i).getValue())) {
+            if(sGrid.getItem(i).getValue() != 0 ){
+                if (numberToLockFor.contains(sGrid.getItem(i).getValue())) {
                     return false;
                 }
             }
-            numberToLockFor.add(grid.getItem(i).getValue());
+            numberToLockFor.add(sGrid.getItem(i).getValue());
         }
         return true;
     }
 
-    public boolean checkGame(){
+    public boolean checkGame(SudokuGrid sGrid){
         for (int i = 0; i < 9; i++){
-            if (!checkColumn(i)) return false;
-            else if (!checkRow(i)) return false;
-            else if (!checkSquare(i)) return false;
+            if (!checkColumn(i, sGrid)) return false;
+            else if (!checkRow(i, sGrid)) return false;
+            else if (!checkSquare(i, sGrid)) return false;
         }
         return true;
     }

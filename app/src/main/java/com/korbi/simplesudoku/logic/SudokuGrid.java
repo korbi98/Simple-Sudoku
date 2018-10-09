@@ -1,7 +1,6 @@
 package com.korbi.simplesudoku.logic;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.korbi.simplesudoku.R;
 import com.korbi.simplesudoku.activities.GameActivity;
@@ -78,7 +77,6 @@ public class SudokuGrid {
     public void loadGridString(String savedGrid){
 
         for (int i = 0; i < 81; i++){
-            Log.d("load", String.valueOf(savedGrid.charAt(i)));
             getItem(i).setValue(Character.getNumericValue(savedGrid.charAt(i)));
         }
         for (int i = 81; i < 162; i++){
@@ -161,11 +159,11 @@ public class SudokuGrid {
     }
 
     private void updateFaultyLists(){
-        boolean faultyColumn = !sHelper.checkColumn(getCurrentColumn());
+        boolean faultyColumn = !sHelper.checkColumn(getCurrentColumn(), this);
         boolean faultyColumnAlreadyInList = faultyColumns.contains(getCurrentColumn());
-        boolean faultyRow = !sHelper.checkRow(getCurrentRow());
+        boolean faultyRow = !sHelper.checkRow(getCurrentRow(), this);
         boolean faultyRowAlreadyInList = faultyRows.contains(getCurrentRow());
-        boolean faultySquare = !sHelper.checkSquare(getCurrentSquare());
+        boolean faultySquare = !sHelper.checkSquare(getCurrentSquare(), this);
         boolean faultySquareAlreadyInList = faultySquares.contains(getCurrentSquare());
 
         if (faultyColumn && !faultyColumnAlreadyInList){
@@ -212,13 +210,13 @@ public class SudokuGrid {
         clearFaultyLists();
 
         for(int i = 0; i < 9; i++){
-            if (!sHelper.checkRow(i)){
+            if (!sHelper.checkRow(i, this)){
                 faultyRows.add(i);
             }
-            if (!sHelper.checkColumn(i)){
+            if (!sHelper.checkColumn(i, this)){
                 faultyColumns.add(i);
             }
-            if (!sHelper.checkSquare(i)){
+            if (!sHelper.checkSquare(i, this)){
                 faultySquares.add(i);
             }
         }

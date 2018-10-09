@@ -34,6 +34,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public static boolean highlightCellPreference;
     CreateSudokusRunnable sudokusRunnable;
     Thread sudokuCreator;
+    GridView sudokuField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         Button[] numberButtons;
         ImageButton deleteNumber;
-        GridView sudokuField;
 
         db = new SudokuDBhelper(getApplicationContext());
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -79,15 +79,24 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             loadGame();
         }
 
-        adapter = new SudokuAdapter(sGrid);
-        sudokuField.setAdapter(adapter);
-
-        if (!MenuActivity.sudokuCreator.isAlive()){
+        try {
+            if (!MenuActivity.sudokuCreator.isAlive()){
+                sudokusRunnable = new CreateSudokusRunnable(getApplicationContext());
+                sudokuCreator = new Thread(sudokusRunnable);
+                sudokuCreator.start();
+            }
+        }
+        catch (NullPointerException e) {
+            sudokuCreator = new Thread(sudokusRunnable);
             sudokusRunnable = new CreateSudokusRunnable(getApplicationContext());
             sudokuCreator = new Thread(sudokusRunnable);
-            Log.d("startThread", "thread started");
-            sudokuCreator.start();
+            sudokuCreator.setPriority(Thread.MAX_PRIORITY);
         }
+
+
+
+        adapter = new SudokuAdapter(sGrid);
+        sudokuField.setAdapter(adapter);
     }
 
     @Override
@@ -111,7 +120,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             sGrid.highlightFaultyCells();
 
             if (sHelper.checkIfFilled(sGrid)){
-                if (sHelper.checkGame()){
+                if (sHelper.checkGame(sGrid)){
                     createGameFinishDialog();
                 }
             }
@@ -131,8 +140,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             sHelper.generateSudoku(sGrid);
             sHelper.clearCells(sGrid, difficulty);
             sGrid.clearFaultyLists();
+            adapter = new SudokuAdapter(sGrid);
+            sudokuField.setAdapter(adapter);
         } else {
+            sGrid.clearFaultyLists();
             sGrid = db.getSudokuByDifficulty(difficulty);
+            adapter = new SudokuAdapter(sGrid);
+            sudokuField.setAdapter(adapter);
         }
     }
 

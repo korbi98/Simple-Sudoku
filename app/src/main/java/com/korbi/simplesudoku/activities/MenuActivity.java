@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,14 +31,12 @@ public class MenuActivity extends AppCompatActivity {
         getSupportActionBar();
 
         if (sudokuCreator == null){
-            Log.d("startThread", "init");
             sudokusRunnable = new CreateSudokusRunnable(getApplicationContext());
             sudokuCreator = new Thread(sudokusRunnable);
             sudokuCreator.setPriority(Thread.MAX_PRIORITY);
         }
 
         if (!sudokuCreator.isAlive()){
-            Log.d("startThread", "thread started");
             sudokusRunnable = new CreateSudokusRunnable(getApplicationContext());
             sudokuCreator = new Thread(sudokusRunnable);
             sudokuCreator.setPriority(Thread.MAX_PRIORITY);

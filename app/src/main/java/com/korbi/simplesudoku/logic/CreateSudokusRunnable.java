@@ -1,7 +1,6 @@
 package com.korbi.simplesudoku.logic;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.korbi.simplesudoku.db.SudokuDBhelper;
 
@@ -41,7 +40,6 @@ public class CreateSudokusRunnable implements Runnable {
             inventoryFull = true;
             for (int i = 1; i <= 10; i++){
                 int count = db.getDifficultyCount(i);
-                Log.d("count"+String.valueOf(i), String.valueOf(count));
 
                 if (count < 30){
                     generateSudoku(i);
@@ -49,11 +47,9 @@ public class CreateSudokusRunnable implements Runnable {
                 }
             }
         }
-        Log.d("test", "success?");
     }
 
     private void generateSudoku(int difficulty){
-        Log.d("test", String.valueOf(difficulty));
         grid = new SudokuGrid(context);
         sHelper.generateSudoku(grid);
         sHelper.clearCells(grid, difficulty);
