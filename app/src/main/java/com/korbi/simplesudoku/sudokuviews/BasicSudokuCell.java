@@ -17,7 +17,8 @@ public class BasicSudokuCell extends android.support.v7.widget.AppCompatTextView
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        //noinspection SuspiciousNameCombination
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 
     public void setIsPreSet(boolean isPreSet) {

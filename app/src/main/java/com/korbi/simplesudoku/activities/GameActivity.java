@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 
 import com.korbi.simplesudoku.R;
@@ -18,6 +16,7 @@ import com.korbi.simplesudoku.logic.CreateSudokusRunnable;
 import com.korbi.simplesudoku.logic.SudokuAdapter;
 import com.korbi.simplesudoku.logic.SudokuGrid;
 import com.korbi.simplesudoku.logic.SudokuLogic;
+import com.korbi.simplesudoku.sudokuviews.SudokuGridView;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,7 +33,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public static boolean highlightCellPreference;
     CreateSudokusRunnable sudokusRunnable;
     Thread sudokuCreator;
-    GridView sudokuField;
+    SudokuGridView sudokuField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,33 +49,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         highlightCellPreference = preferences.getBoolean(getString(R.string.game_settings_show_current_position_key), true);
 
         numberButtons = new Button[9];
-        numberButtons[0] = (Button) findViewById(R.id.button1);
-        numberButtons[1] = (Button) findViewById(R.id.button2);
-        numberButtons[2] = (Button) findViewById(R.id.button3);
-        numberButtons[3] = (Button) findViewById(R.id.button4);
-        numberButtons[4] = (Button) findViewById(R.id.button5);
-        numberButtons[5] = (Button) findViewById(R.id.button6);
-        numberButtons[6] = (Button) findViewById(R.id.button7);
-        numberButtons[7] = (Button) findViewById(R.id.button8);
-        numberButtons[8] = (Button) findViewById(R.id.button9);
+        numberButtons[0] = findViewById(R.id.button1);
+        numberButtons[1] = findViewById(R.id.button2);
+        numberButtons[2] = findViewById(R.id.button3);
+        numberButtons[3] = findViewById(R.id.button4);
+        numberButtons[4] = findViewById(R.id.button5);
+        numberButtons[5] = findViewById(R.id.button6);
+        numberButtons[6] = findViewById(R.id.button7);
+        numberButtons[7] = findViewById(R.id.button8);
+        numberButtons[8] = findViewById(R.id.button9);
 
         for (int i = 0; i < 9; i++) numberButtons[i].setOnClickListener(this);
 
-        deleteNumber = (ImageButton) findViewById(R.id.buttonDelete);
+        deleteNumber = findViewById(R.id.buttonDelete);
         deleteNumber.setOnClickListener(this);
 
         sGrid = new SudokuGrid(getApplicationContext());
         sHelper = new SudokuLogic(sGrid);
 
-        sudokuField = (GridView) findViewById(R.id.sudoku_field);
+        sudokuField = findViewById(R.id.sudoku_field);
 
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle.getInt(LOAD_OR_NEW) == NEW_GAME){
+        if((bundle != null ? bundle.getInt(LOAD_OR_NEW) : 0) == NEW_GAME){
             newGame();
         }
         else if (bundle.getInt(LOAD_OR_NEW) == LOAD_GAME){
             loadGame();
+        }
+        else {
+            newGame();
         }
 
         try {
